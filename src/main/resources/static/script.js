@@ -5,9 +5,11 @@ $(document).ready(e=>{
 		localStorage.setItem("name",name)
 		$("#name-title").text(`Welcome, ${name}`)
 		connect();
+		$("#name-value").val('')
 	})
 	
 	$("#send").click(()=>{
+		
 		sendMessage();
 	})
 	
@@ -37,12 +39,31 @@ function connect(){
 }
 function showMessage(message){
 	console.log("ShowMessage")
-	$("#message-container-table").prepend(`<tr><td><b>${message.name} : </b>${message.content}</td></tr>`)
+	/*$("#message-container-table").prepend(`<tr><td><b>${message.name} : </b>${message.content} </td><td><span class="timestamp">${message.timestamp}</span></td></tr>`)*/
+	$("#message-container-table").prepend(`
+    <tr class="message-row">
+        <td class="user-info">
+            <b>${message.name}:</b>
+        </td>
+        <td class="message-content">
+            ${message.content}
+        </td>
+        <td class="timestamp">
+            ${message.timestamp}
+        </td>
+    </tr>
+`);
+
 }
 function sendMessage(){
+	var msg = $("#message-value").val()
+	const timestamp1 = new Date().toLocaleTimeString()
 	let jsonObj = {
+		
 		name:localStorage.getItem("name"),
-		content:$("#message-value").val()
+		content:msg,
+		timestamp : timestamp1
 	}
 	stompClient.send("/app/message",{},JSON.stringify(jsonObj))
+	$("#message-value").val('')
 }
