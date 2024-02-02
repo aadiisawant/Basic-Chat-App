@@ -19,6 +19,10 @@ $(document).ready(e=>{
 		$("#name-form").removeClass("d-none")
 		$("#chat-room").addClass("d-none")
 	})
+	
+	$("#showhistory").click(()=>{
+		fetchChatHistory();
+	})
 })
 
 var stompClient=null;
@@ -66,4 +70,27 @@ function sendMessage(){
 	}
 	stompClient.send("/app/message",{},JSON.stringify(jsonObj))
 	$("#message-value").val('')
+}
+
+function fetchChatHistory(){
+	$.ajax({
+        url: "/chathistory/getchat", 
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            displayChatHistory(data);
+        },
+        error: function (error) {
+            console.error("Error fetching chat history:", error);
+        },
+    });
+}
+
+function displayChatHistory(chatHistory) {
+   
+    $("#message-container-table").empty();
+
+    chatHistory.forEach((message) => {
+        showMessage(message);
+    });
 }
