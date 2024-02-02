@@ -3,7 +3,7 @@ $(document).ready(e=>{
 		
 		let name = $("#name-value").val()
 		localStorage.setItem("name",name)
-		$("#name-title").text(`Welcome, ${name}`)
+		$("#name-title").text(`Welcome to Chat Room, ${name}!`)
 		connect();
 		$("#name-value").val('')
 	})
@@ -22,6 +22,10 @@ $(document).ready(e=>{
 	
 	$("#showhistory").click(()=>{
 		fetchChatHistory();
+	})
+	
+	$("#deletehistory").click(()=>{
+		deleteChatHistory();
 	})
 })
 
@@ -93,4 +97,17 @@ function displayChatHistory(chatHistory) {
     chatHistory.forEach((message) => {
         showMessage(message);
     });
+}
+function deleteChatHistory(){
+	$.ajax({
+		url: "/chathistory/deletechat",
+		type: "DELETE",
+		success: function (response){
+			console.log(response);
+			$("#message-container-table").empty();
+		},
+		error: function (error){
+			console.error("Error deleting the chat history",error)
+		}
+	});
 }
