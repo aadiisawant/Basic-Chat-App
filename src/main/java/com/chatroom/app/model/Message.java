@@ -1,6 +1,15 @@
 package com.chatroom.app.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class Message {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	private String name;
     private String content;
     private String timestamp;
@@ -8,6 +17,9 @@ public class Message {
         this.name = name;
         this.content = content;
         this.timestamp = timestamp;;
+    }
+    public Message() {
+    	
     }
     public String getName() {
         return name;
